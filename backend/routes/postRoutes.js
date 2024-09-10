@@ -1,19 +1,19 @@
 const express = require('express');
 const Post = require('../models/Post');
 const User = require('../models/User');
+const auth = require('../middleware/authMiddleware');
 const router = express.Router();
 
-// Crear nueva publicación
-router.post('/', async (req, res) => {
-    const { title, body, authorId } = req.body;
+// Crear nueva publicación (solo para usuarios autenticados)
+router.post('/', auth, async (req, res) => {
+    const { title, body } = req.body;
 
     try {
-        const author = await User.findById(authorId);
-        if (!author) {
-            return res.status(400).json({ message: 'Autor no encontrado' });
-        }
-
-        const post = new Post({ title, body, author: authorId });
+        const post = new Post({
+            title,
+            body,
+            author: req.user.id, // Usar el ID del usuario autenticado
+        });
         await post.save();
 
         res.status(201).json(post);
