@@ -1,0 +1,56 @@
+.post-list-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.post-card {
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);  /* Gradiente suave */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);  /* Animación sutil al pasar el mouse */
+}
+
+.read-more-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.read-more-button:hover {
+    background-color: #45a049;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px;
+    background-color: #fafafa;
+    border-radius: 10px;
+}
+
+.create-post-button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-post-button:hover {
+    background-color: #2980b9;
+}

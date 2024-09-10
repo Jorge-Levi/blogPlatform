@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import API from './api';
+import './PostList.css';  // Para estilos personalizados
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
@@ -17,15 +18,24 @@ const PostList = () => {
     }, []);
 
     return (
-        <div>
+        <div className="post-list-container">
             <h2>Publicaciones</h2>
-            {posts.map((post) => (
-                <div key={post._id}>
-                    <h3>{post.title}</h3>
-                    <p>{post.body}</p>
-                    <p><strong>Autor:</strong> {post.author.username}</p>
+            {posts.length === 0 ? (
+                <div className="empty-state">
+                    <p>No hay publicaciones disponibles.</p>
+                    <button className="create-post-button">Crear una nueva publicación</button>
                 </div>
-            ))}
+            ) : (
+                <div className="posts-grid">
+                    {posts.map((post) => (
+                        <div key={post._id} className="post-card">
+                            <h3>{post.title}</h3>
+                            <p>{post.body.slice(0, 100)}...</p>
+                            <button className="read-more-button">Leer más</button>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
