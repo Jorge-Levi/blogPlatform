@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';  // Para redirigir
 import API from './api';
-import './PostList.css';  // Para estilos personalizados
+import './PostList.css';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();  // Usamos navigate para redirigir
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -23,7 +25,9 @@ const PostList = () => {
             {posts.length === 0 ? (
                 <div className="empty-state">
                     <p>No hay publicaciones disponibles.</p>
-                    <button className="create-post-button">Crear una nueva publicación</button>
+                    <button className="create-post-button" onClick={() => navigate('/create-post')}>
+                        Crear una nueva publicación
+                    </button>
                 </div>
             ) : (
                 <div className="posts-grid">

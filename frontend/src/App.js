@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Register from './Register';
 import Login from './Login';
 import PostList from './PostList';
+import CreatePost from './CreatePost';
 import { useState, useEffect } from 'react';
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/posts" element={<PostList />} />
+                    <Route path="/create-post" element={<CreatePost />} />
                     {/* Rutas protegidas para administradores */}
                     {userRole === 'admin' && (
                         <Route path="/admin" element={<h2>Página de administración</h2>} />
