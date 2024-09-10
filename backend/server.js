@@ -1,12 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');  // Importar cors
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
 
 dotenv.config();
 
 const app = express();
+
+// Middleware para manejar CORS
+app.use(cors({ origin: 'http://localhost:3000' }));  // Permitir solicitudes desde localhost:3000
 
 // Middleware para parsear JSON
 app.use(express.json());
