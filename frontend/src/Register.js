@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';  // Para redirección
 import API from './api';
+import './Register.css';  // Para estilos personalizados
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-    });
-
+    const [formData, setFormData] = useState({ username: '', email: '', password: '' });
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,31 +15,43 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const response = await API.post('/users/register', formData);
-            setMessage(response.data.message);
+            setMessage('Registro exitoso. Redirigiendo a login...');
+            setTimeout(() => navigate('/login'), 2000);  // Redirige tras 2 segundos
         } catch (error) {
-            setMessage('Error al registrar el usuario.');
+            setMessage('Error en el registro. Intenta de nuevo.');
         }
+        setLoading(false);
+    };
+
+    // Nueva función para manejar la redirección al login
+    const handleLoginRedirect = () => {
+        navigate('/login');  // Redirige a la página de login
     };
 
     return (
-        <div>
-            <h2>Registro</h2>
-            <form onSubmit={handleSubmit}>
+        <div className="register-container">
+            <h2>Regístrate</h2>
+            <form onSubmit={handleSubmit} className="register-form">
                 <input
                     type="text"
                     name="username"
                     placeholder="Nombre de usuario"
                     onChange={handleChange}
                     value={formData.username}
+                    className="input-field"
+                    required
                 />
                 <input
                     type="email"
                     name="email"
-                    placeholder="Email"
+                    placeholder="Correo electrónico"
                     onChange={handleChange}
                     value={formData.email}
+                    className="input-field"
+                    required
                 />
                 <input
                     type="password"
@@ -48,10 +59,20 @@ const Register = () => {
                     placeholder="Contraseña"
                     onChange={handleChange}
                     value={formData.password}
+                    className="input-field"
+                    required
                 />
-                <button type="submit">Registrarse</button>
+                <button type="submit" className={`register-button ${loading ? 'loading' : ''}`}>
+                    {loading ? 'Registrando...' : 'Registrarse'}
+                </button>
             </form>
-            {message && <p>{message}</p>}
+
+            {/* Botón para regresar a la página de login */}
+            <button onClick={handleLoginRedirect} className="back-to-login-button">
+                Volver al Inicio de Sesión
+            </button>
+
+            {message && <p className="register-message">{message}</p>}
         </div>
     );
 };
