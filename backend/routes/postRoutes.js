@@ -33,6 +33,19 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Obtener una publicación específica por ID
+router.get('/:id', async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id).populate('author', 'username');
+        if (!post) {
+            return res.status(404).json({ message: 'Publicación no encontrada' });
+        }
+        res.json(post);
+    } catch (error) {
+        res.status(500).json({ message: 'Error en el servidor' });
+    }
+});
+
 // Eliminar publicación (solo administradores)
 router.delete('/:id', auth, admin, async (req, res) => {
     try {

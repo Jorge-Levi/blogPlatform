@@ -54,3 +54,18 @@
 .create-post-button:hover {
     background-color: #2980b9;
 }
+
+
+.logout-button {
+    padding: 10px 15px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #c0392b;
+}

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Para redirigir
+import { useNavigate } from 'react-router-dom';
 import API from './api';
 import './PostList.css';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
-    const navigate = useNavigate();  // Usamos navigate para redirigir
+    const navigate = useNavigate();  // Para manejar la redirección al cerrar sesión
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -19,16 +19,20 @@ const PostList = () => {
         fetchPosts();
     }, []);
 
+    // Función para cerrar sesión
+    const handleLogout = () => {
+        localStorage.removeItem('token');  // Eliminar el token JWT
+        navigate('/login');  // Redirigir a la página de inicio de sesión
+    };
+
     return (
         <div className="post-list-container">
             <h2>Publicaciones</h2>
+            {/* Botón de cerrar sesión */}
+            <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
+
             {posts.length === 0 ? (
-                <div className="empty-state">
-                    <p>No hay publicaciones disponibles.</p>
-                    <button className="create-post-button" onClick={() => navigate('/create-post')}>
-                        Crear una nueva publicación
-                    </button>
-                </div>
+                <p>No hay publicaciones disponibles.</p>
             ) : (
                 <div className="posts-grid">
                     {posts.map((post) => (
