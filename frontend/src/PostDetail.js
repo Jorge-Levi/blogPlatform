@@ -1,46 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import API from './api';
-import './PostDetail.css';  // Para agregar estilos personalizados
+import './PostDetail.css';
 
 const PostDetail = () => {
     const { id } = useParams();  // Obtener el ID de la publicación desde la URL
     const [post, setPost] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const navigate = useNavigate();  // Para manejar la redirección
 
     useEffect(() => {
         const fetchPost = async () => {
             try {
                 const response = await API.get(`/posts/${id}`);
                 setPost(response.data);
-                setLoading(false);
             } catch (error) {
-                setError('Error al cargar la publicación');
-                setLoading(false);
+                console.log('Error al obtener la publicación');
             }
         };
-
         fetchPost();
     }, [id]);
 
-    if (loading) {
-        return <p>Cargando...</p>;
-    }
+    if (!post) return <p>Cargando...</p>;
 
-    if (error) {
-        return <p>{error}</p>;
-    }
+    // Función para regresar a la lista de publicaciones
+    const handleBackToPosts = () => {
+        navigate('/posts');  // Redirigir a la lista de publicaciones
+    };
 
     return (
         <div className="post-detail-container">
-            {post && (
-                <>
-                    <h2>{post.title}</h2>
-                    <p>{post.body}</p>
-                    <p><strong>Autor:</strong> {post.author.username}</p>
-                </>
-            )}
+            <h2>{post.title}</h2>
+            <p>{post.body}</p>
+            {/* Asegurarse de acceder correctamente a la propiedad username del objeto author */}
+            <p><strong>Autor:</strong> {post.author?.username}</p>
+            
+            {/* Botón para regresar a la lista de publicaciones */}
+            <button onClick={handleBackToPosts} className="back-button">Regresar a publicaciones</button>
         </div>
     );
 };

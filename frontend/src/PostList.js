@@ -5,7 +5,7 @@ import './PostList.css';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
-    const navigate = useNavigate();  // Para manejar la redirección al cerrar sesión
+    const navigate = useNavigate();  // Para manejar la redirección
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -25,6 +25,11 @@ const PostList = () => {
         navigate('/login');  // Redirigir a la página de inicio de sesión
     };
 
+    // Función para redirigir a la página de detalles de la publicación
+    const handleReadMore = (postId) => {
+        navigate(`/posts/${postId}`);  // Redirigir a la página de detalles usando el ID del post
+    };
+
     return (
         <div className="post-list-container">
             <h2>Publicaciones</h2>
@@ -39,7 +44,12 @@ const PostList = () => {
                         <div key={post._id} className="post-card">
                             <h3>{post.title}</h3>
                             <p>{post.body.slice(0, 100)}...</p>
-                            <button className="read-more-button">Leer más</button>
+                            <button
+                                className="read-more-button"
+                                onClick={() => handleReadMore(post._id)}  // Redirigir al hacer clic en "Leer Más"
+                            >
+                                Leer más
+                            </button>
                         </div>
                     ))}
                 </div>

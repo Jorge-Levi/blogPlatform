@@ -13,3 +13,19 @@ p {
     font-size: 18px;
     line-height: 1.6;
 }
+
+.back-button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    background-color: #2980b9;
+}
