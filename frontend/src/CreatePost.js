@@ -23,6 +23,11 @@ const CreatePost = () => {
         setLoading(false);
     };
 
+    // Función para regresar a la lista de publicaciones
+    const handleBackToPosts = () => {
+        navigate('/posts');  // Redirigir a la lista de publicaciones
+    };
+
     return (
         <div className="create-post-container">
             <h2>Crear Nueva Publicación</h2>
@@ -49,6 +54,11 @@ const CreatePost = () => {
                 </button>
             </form>
             {message && <p className="create-post-message">{message}</p>}
+
+            {/* Botón para regresar a la lista de publicaciones */}
+            <button onClick={handleBackToPosts} className="back-to-posts-button">
+                Regresar a Publicaciones
+            </button>
         </div>
     );
 };

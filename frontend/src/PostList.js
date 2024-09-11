@@ -47,9 +47,17 @@ const PostList = () => {
         navigate(`/posts/${postId}`);  // Redirigir a la página de detalles usando el ID del post
     };
 
+    // Función para redirigir a la página de creación de post
+    const handleCreatePost = () => {
+        navigate('/create-post');  // Redirigir al formulario de creación de post
+    };
+
     return (
         <div className="post-list-container">
             <h2>Mis Publicaciones</h2>
+            {/* Botón para crear un nuevo post */}
+            <button onClick={handleCreatePost} className="create-post-button">Crear Nuevo Post</button>
+
             {myPosts.length === 0 ? (
                 <p>No has creado ninguna publicación.</p>
             ) : (
