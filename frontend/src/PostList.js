@@ -5,13 +5,30 @@ import './PostList.css';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
+    const [myPosts, setMyPosts] = useState([]);
+    const [otherPosts, setOtherPosts] = useState([]);
     const navigate = useNavigate();  // Para manejar la redirección
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
                 const response = await API.get('/posts');
-                setPosts(response.data);
+                const allPosts = response.data;
+
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+                    const userId = decodedToken.id;
+
+                    // Separar "Mis Posts" y "Posts de los demás"
+                    const myPosts = allPosts.filter(post => post.author._id === userId);
+                    const otherPosts = allPosts.filter(post => post.author._id !== userId);
+
+                    setMyPosts(myPosts);
+                    setOtherPosts(otherPosts);
+                } else {
+                    setOtherPosts(allPosts);  // Si no hay token, todos son "Posts de los demás"
+                }
             } catch (error) {
                 console.log('Error al obtener las publicaciones');
             }
@@ -32,15 +49,12 @@ const PostList = () => {
 
     return (
         <div className="post-list-container">
-            <h2>Publicaciones</h2>
-            {/* Botón de cerrar sesión */}
-            <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
-
-            {posts.length === 0 ? (
-                <p>No hay publicaciones disponibles.</p>
+            <h2>Mis Publicaciones</h2>
+            {myPosts.length === 0 ? (
+                <p>No has creado ninguna publicación.</p>
             ) : (
                 <div className="posts-grid">
-                    {posts.map((post) => (
+                    {myPosts.map((post) => (
                         <div key={post._id} className="post-card">
                             <h3>{post.title}</h3>
                             <p>{post.body.slice(0, 100)}...</p>
@@ -54,6 +68,30 @@ const PostList = () => {
                     ))}
                 </div>
             )}
+
+            <h2>Publicaciones de Otros Usuarios</h2>
+            {otherPosts.length === 0 ? (
+                <p>No hay publicaciones de otros usuarios.</p>
+            ) : (
+                <div className="posts-grid">
+                    {otherPosts.map((post) => (
+                        <div key={post._id} className="post-card">
+                            <h3>{post.title}</h3>
+                            <p>{post.body.slice(0, 100)}...</p>
+                            <p><strong>Autor:</strong> {post.author?.username || 'Anónimo'}</p>
+                            <button
+                                className="read-more-button"
+                                onClick={() => handleReadMore(post._id)}  // Redirigir al hacer clic en "Leer Más"
+                            >
+                                Leer más
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Botón de cerrar sesión */}
+            <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
         </div>
     );
 };
