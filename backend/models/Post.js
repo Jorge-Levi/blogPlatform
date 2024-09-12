@@ -11,15 +11,18 @@ const postSchema = new mongoose.Schema({
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',  
+        ref: 'User',
         required: true,
     },
-    date: {
+    isPrivate: {
+        type: Boolean,
+        default: false,  // El post es público por defecto
+    },
+    createdAt: {
         type: Date,
         default: Date.now,
-    },
+    }
 });
 
 const Post = mongoose.model('Post', postSchema);
-
 module.exports = Post;

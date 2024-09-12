@@ -24,9 +24,17 @@ router.post('/', auth, async (req, res) => {
 });
 
 // Obtener todas las publicaciones
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
-        const posts = await Post.find().populate('author', 'username');
+        const userId = req.user.id;  // El ID del usuario autenticado
+        // Obtener publicaciones que sean públicas o que pertenezcan al usuario autenticado
+        const posts = await Post.find({
+            $or: [
+                { isPrivate: false },  // Publicaciones públicas
+                { author: userId }  // Publicaciones del usuario autenticado
+            ]
+        }).populate('author', 'username');
+        
         res.json(posts);
     } catch (error) {
         res.status(500).json({ message: 'Error en el servidor' });
@@ -46,18 +54,65 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Eliminar publicación (solo administradores)
-router.delete('/:id', auth, admin, async (req, res) => {
+// Editar una publicación (solo el autor)
+router.put('/:id', auth, async (req, res) => {
+    const { title, body } = req.body;
+
+    try {
+        const post = await Post.findById(req.params.id);
+
+        if (!post) return res.status(404).json({ message: 'Publicación no encontrada' });
+        if (post.author.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'No tienes permiso para editar esta publicación' });
+        }
+
+        post.title = title || post.title;
+        post.body = body || post.body;
+        await post.save();
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al editar la publicación' });
+    }
+});
+
+// Eliminar publicación (solo el autor o administradores)
+router.delete('/:id', auth, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
             return res.status(404).json({ message: 'Publicación no encontrada' });
         }
 
-        await post.remove();
-        res.json({ message: 'Publicación eliminada' });
+        if (post.author.toString() !== req.user.id && !req.user.isAdmin) {
+            return res.status(403).json({ message: 'No tienes permiso para eliminar esta publicación' });
+        }
+
+        // Usar deleteOne en lugar de remove
+        await Post.deleteOne({ _id: req.params.id });
+        res.json({ message: 'Publicación eliminada correctamente' });
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor' });
+        console.error(error);
+        res.status(500).json({ message: 'Error al eliminar la publicación' });
+    }
+});
+
+
+
+// Cambiar visibilidad de la publicación (Público/Privado)
+router.patch('/:id/visibility', auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+
+        if (!post) return res.status(404).json({ message: 'Publicación no encontrada' });
+        if (post.author.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'No tienes permiso para cambiar la visibilidad de esta publicación' });
+        }
+
+        post.isPrivate = !post.isPrivate;
+        await post.save();
+        res.status(200).json({ message: `La publicación es ahora ${post.isPrivate ? 'privada' : 'pública'}` });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al cambiar la visibilidad' });
     }
 });
 

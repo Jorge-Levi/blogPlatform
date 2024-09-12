@@ -29,3 +29,25 @@ p {
 .back-button:hover {
     background-color: #2980b9;
 }
+
+.edit-button, .delete-button, .visibility-button {
+    margin: 10px;
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+}
+
+.visibility-button {
+    background-color: #f39c12;
+}
+
+.edit-button:hover, .delete-button:hover, .visibility-button:hover {
+    opacity: 0.8;
+}
