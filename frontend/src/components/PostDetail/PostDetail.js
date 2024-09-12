@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import API from './api';
+import API from '../../utils/api';
 import './PostDetail.css';
 
 const PostDetail = () => {

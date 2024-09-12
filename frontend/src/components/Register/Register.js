@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';  // Para redirección
-import API from './api';
+import API from '../../utils/api';
 import './Register.css';  // Para estilos personalizados
 
 const Register = () => {

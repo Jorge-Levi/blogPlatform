@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from './api';  // Para hacer la solicitud al backend
+import API from '../../utils/api';  // Para hacer la solicitud al backend
 import './CreatePost.css';  // Para estilos personalizados
 
 const CreatePost = () => {
