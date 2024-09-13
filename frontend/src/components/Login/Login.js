@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Importamos useNavigate
+import { useNavigate } from 'react-router-dom';
 import API from '../../utils/api';
 import './Login.css';
 
@@ -7,7 +7,7 @@ const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();  // Creamos una instancia de useNavigate
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,18 +18,17 @@ const Login = () => {
         setLoading(true);
         try {
             const response = await API.post('/users/login', formData);
-            localStorage.setItem('token', response.data.token);  // Guardar el token
+            localStorage.setItem('token', response.data.token);
             setMessage('Inicio de sesión exitoso.');
-            navigate('/posts');  // Redirigir a la página de publicaciones
+            navigate('/posts');
         } catch (error) {
-            setMessage('Error en las credenciales.');
+            setMessage('Credenciales incorrectas. Intenta nuevamente.');
         }
         setLoading(false);
     };
 
-    // Nueva función para manejar la redirección a la página de registro
     const handleRegisterRedirect = () => {
-        navigate('/register');  // Redirige a la página de registro
+        navigate('/register');
     };
 
     return (
@@ -59,7 +58,6 @@ const Login = () => {
                 </button>
             </form>
 
-            {/* Botón para redirigir a la página de registro */}
             <button onClick={handleRegisterRedirect} className="register-button">
                 ¿No tienes una cuenta? Regístrate aquí
             </button>

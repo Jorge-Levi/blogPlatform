@@ -1,31 +1,47 @@
 .post-list-container {
-    padding: 2rem;
+    padding: 1rem 2rem;
     max-width: 1200px;
     margin: auto;
+    background-color: #f9f9f9;  /* Fondo suave */
 }
 
 .posts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /* Ajusta automáticamente las columnas */
+    gap: 30px;  /* Espacio entre tarjetas */
 }
+
+@media (max-width: 768px) {
+    .posts-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));  /* Para pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    .posts-grid {
+        grid-template-columns: auto;  /* En pantallas muy pequeñas, solo una columna */
+    }
+}
+
 
 .post-card {
     padding: 20px;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);  /* Gradiente suave */
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;  /* Añade animaciones */
 }
 
 .post-card:hover {
-    transform: translateY(-5px);  /* Animación sutil al pasar el mouse */
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Aumenta la sombra al pasar el mouse */
 }
 
 .read-more-button {
     background-color: #4CAF50;
     color: white;
-    padding: 10px;
+    padding: 12px;
+    font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -33,13 +49,7 @@
 
 .read-more-button:hover {
     background-color: #45a049;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 50px;
-    background-color: #fafafa;
-    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);  /* Añadir sombra al hover */
 }
 
 .create-post-button {
@@ -49,23 +59,42 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
 .create-post-button:hover {
     background-color: #2980b9;
 }
 
-
 .logout-button {
-    padding: 10px 15px;
+    padding: 12px 20px;
     background-color: #e74c3c;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
     transition: background-color 0.3s ease;
+    margin-top: 20px;  /* Separación visual */
 }
 
 .logout-button:hover {
     background-color: #c0392b;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px;
+    background-color: #eef2f7;
+    border-radius: 10px;
+    font-size: 18px;
+    color: #6c757d;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #6c757d;
 }

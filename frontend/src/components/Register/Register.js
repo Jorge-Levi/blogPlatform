@@ -42,6 +42,7 @@ const Register = () => {
                     onChange={handleChange}
                     value={formData.username}
                     className="input-field"
+                    aria-label="Nombre de usuario"  // Accesibilidad
                     required
                 />
                 <input
@@ -51,6 +52,7 @@ const Register = () => {
                     onChange={handleChange}
                     value={formData.email}
                     className="input-field"
+                    aria-label="Correo electrónico"  // Accesibilidad
                     required
                 />
                 <input
@@ -60,6 +62,7 @@ const Register = () => {
                     onChange={handleChange}
                     value={formData.password}
                     className="input-field"
+                    aria-label="Contraseña"  // Accesibilidad
                     required
                 />
                 <button type="submit" className={`register-button ${loading ? 'loading' : ''}`}>

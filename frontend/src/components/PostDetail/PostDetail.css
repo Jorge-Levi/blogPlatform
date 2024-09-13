@@ -2,52 +2,163 @@
     padding: 2rem;
     max-width: 800px;
     margin: auto;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-    font-size: 28px;
+    font-size: 32px;
     margin-bottom: 1rem;
+    color: #2c3e50;
 }
 
 p {
     font-size: 18px;
     line-height: 1.6;
+    color: #34495e;
 }
 
-.back-button {
-    padding: 10px 15px;
-    background-color: #3498db;
-    color: white;
+/* Contenedor de botones para centrar y distribuir uniformemente */
+.button-group {
+    display: flex;
+    justify-content: center;       /* Centrar botones horizontalmente */
+    gap: 15px;                     /* Espacio entre botones */
+    margin-top: 20px;
+    flex-wrap: wrap;               /* Permitir que los botones se ajusten si es necesario */
+}
+
+/* Estilo general de los botones */
+button {
+    font-size: 16px;
+    padding: 12px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px; /* Ancho fijo en pantallas grandes */
+    height: 50px;
+    box-sizing: border-box;
+}
+
+/* Hacer que los botones tomen el 100% del ancho en dispositivos móviles */
+@media (max-width: 768px) {
+    button {
+        width: 100%; /* Ocupa el 100% del ancho en pantallas pequeñas */
+        margin-bottom: 10px; /* Añadir un pequeño margen para separar los botones */
+    }
+}
+
+/* Contenedor de botones centrados */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
     margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+button svg {
+    margin-right: 8px;
+}
+
+/* Botones individuales */
+.back-button {
+    background-color: #3498db;
+    color: white;
 }
 
 .back-button:hover {
     background-color: #2980b9;
 }
 
-.edit-button, .delete-button, .visibility-button {
-    margin: 10px;
-    padding: 10px 15px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.edit-button {
+    background-color: #27ae60;
+}
+
+.edit-button:hover {
+    background-color: #2ecc71;
 }
 
 .delete-button {
     background-color: #e74c3c;
 }
 
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
 .visibility-button {
     background-color: #f39c12;
 }
 
-.edit-button:hover, .delete-button:hover, .visibility-button:hover {
-    opacity: 0.8;
+.visibility-button:hover {
+    background-color: #e67e22;
+}
+
+.post-message {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #16a085;
+}
+
+
+/* Contenedor de edición */
+.edit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Estilo para el input */
+.edit-input, .edit-textarea {
+    width: 100%;
+    max-width: 700px;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+    transition: all 0.3s ease;  /* Transición suave */
+}
+
+/* Cambios al hacer foco en el input */
+.edit-input:focus, .edit-textarea:focus {
+    outline: none;
+    border-color: #3498db;  /* Cambia el borde cuando se enfoca */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Incrementa la sombra */
+    background-color: #ffffff;  /* Fondo blanco puro */
+}
+
+/* Estilo para el botón de guardar cambios */
+.save-button {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #27ae60;  /* Color de fondo verde */
+    color: white;  /* Texto en blanco */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Sombra inicial */
+    width: 100%;
+    text-align: center;  /* Centrar el texto */
+}
+
+/* Efectos al hacer hover y clic */
+.save-button:hover {
+    background-color: #2ecc71;  /* Un tono más claro de verde al pasar el ratón */
+    transform: translateY(-2px);  /* Sube ligeramente el botón */
+}
+
+.save-button:active {
+    transform: translateY(0);  /* Vuelve a su posición original al hacer clic */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);  /* Sombra más intensa al hacer clic */
 }

@@ -6,12 +6,15 @@
     padding: 2rem;
     max-width: 600px;
     margin: auto;
+    background-color: #f9f9f9;  /* Fondo claro para dar sensación de espacio */
+    border-radius: 10px;
 }
 
 .create-post-form {
     width: 100%;
     display: flex;
     flex-direction: column;
+    gap: 16px;  /* Espaciado entre campos */
 }
 
 .input-field, .textarea-field {
@@ -19,13 +22,18 @@
     margin: 8px 0;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 18px;  /* Fuente más grande para mejor legibilidad */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
 }
 
 .textarea-field {
     height: 150px;
     resize: none;
+}
+
+.input-field:focus, .textarea-field:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Microinteracción para el input */
 }
 
 .create-post-button {
@@ -36,12 +44,13 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
     font-size: 16px;
 }
 
 .create-post-button:hover {
     background-color: #45a049;
+    transform: translateY(-2px);  /* Microinteracción: ligera elevación del botón */
 }
 
 .loading {
@@ -57,15 +66,32 @@
 }
 
 .back-to-posts-button {
-    padding: 10px 15px;
+    padding: 10px 20px;
     background-color: #3498db;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    transition: background-color 0.3s;
+    width: 100%;
 }
 
 .back-to-posts-button:hover {
     background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+    .create-post-container {
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    .input-field, .textarea-field {
+        font-size: 16px;
+    }
+
+    .create-post-button {
+        font-size: 14px;
+        padding: 10px;
+    }
 }

@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import API from '../../utils/api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash, faEye, faEyeSlash, faSave, faArrowLeft,faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import './PostDetail.css';
 
 const PostDetail = () => {
-    const { id } = useParams();  // Obtener el ID de la publicación desde la URL
+    const { id } = useParams();
     const [post, setPost] = useState(null);
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [message, setMessage] = useState('');
-    const [isAuthor, setIsAuthor] = useState(false);  // Verificar si es el autor del post
-    const [isEditing, setIsEditing] = useState(false);  // Estado para saber si estamos en modo edición
-    const navigate = useNavigate();  // Para manejar la redirección
+    const [isAuthor, setIsAuthor] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPost = async () => {
             try {
                 const response = await API.get(`/posts/${id}`);
                 setPost(response.data);
-                setTitle(response.data.title);  // Inicializamos los inputs con los valores del post
+                setTitle(response.data.title);
                 setBody(response.data.body);
 
-                // Obtener el ID del usuario autenticado desde el token
                 const token = localStorage.getItem('token');
                 if (token) {
                     const decodedToken = JSON.parse(atob(token.split('.')[1]));
                     const userId = decodedToken.id;
 
-                    // Verificar si el usuario autenticado es el autor del post
                     if (response.data.author._id === userId) {
                         setIsAuthor(true);
                     }
@@ -39,55 +39,61 @@ const PostDetail = () => {
         fetchPost();
     }, [id]);
 
+    // Elimina el mensaje después de 3 segundos
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => {
+                setMessage(''); // Limpiar el mensaje después de 3 segundos
+            }, 3000);
+
+            // Limpia el temporizador si el componente se desmonta o si cambia el mensaje
+            return () => clearTimeout(timer);
+        }
+    }, [message]);
+
     if (!post) return <p>Cargando...</p>;
 
-    // Función para regresar a la lista de publicaciones
     const handleBackToPosts = () => {
-        navigate('/posts');  // Redirigir a la lista de publicaciones
+        navigate('/posts');
     };
 
-    // Función para activar el modo edición
     const handleEditClick = () => {
-        setIsEditing(true);  // Cambiar a modo edición
+        setIsEditing(true);
     };
 
-    // Función para guardar los cambios
     const handleSaveChanges = async () => {
-        // Verificar si se han hecho cambios en el título o en el cuerpo
         if (title !== post.title || body !== post.body) {
             try {
-                const updatedPost = { title, body };  // Solo enviamos el título y el cuerpo que han cambiado
+                const updatedPost = { title, body };
                 await API.put(`/posts/${id}`, updatedPost);
-                setMessage('Publicación actualizada con éxito');
-                setPost({ ...post, title, body });  // Actualizar el estado local del post
-                setIsEditing(false);  // Salir del modo edición
+                setMessage('¡Publicación actualizada con éxito!');
+                setPost({ ...post, title, body });
+                setIsEditing(false);
             } catch (error) {
-                setMessage('Error al actualizar la publicación');
+                setMessage('Error al actualizar la publicación. Inténtalo de nuevo.');
             }
         } else {
-            setMessage('No se han realizado cambios en la publicación');
+            setMessage('No se realizaron cambios en la publicación.');
         }
     };
 
-    // Función para eliminar el post
     const handleDelete = async () => {
         try {
             await API.delete(`/posts/${id}`);
-            setMessage('Publicación eliminada con éxito');
-            navigate('/posts');  // Redirigir a la lista de publicaciones después de eliminar
+            setMessage('¡Publicación eliminada con éxito!');
+            navigate('/posts');
         } catch (error) {
-            setMessage('Error al eliminar la publicación');
+            setMessage('Error al eliminar la publicación.');
         }
     };
 
-    // Función para cambiar la visibilidad del post
     const handleToggleVisibility = async () => {
         try {
             await API.patch(`/posts/${id}/visibility`);
-            setMessage(`La visibilidad ha cambiado. Ahora es ${post.isPrivate ? 'público' : 'privado'}`);
-            setPost({ ...post, isPrivate: !post.isPrivate });  // Actualizar el estado local del post
+            setMessage(`Visibilidad actualizada: ahora es ${post.isPrivate ? 'público' : 'privado'}.`);
+            setPost({ ...post, isPrivate: !post.isPrivate });
         } catch (error) {
-            setMessage('Error al cambiar la visibilidad');
+            setMessage('Error al cambiar la visibilidad.');
         }
     };
 
@@ -98,40 +104,49 @@ const PostDetail = () => {
             <p><strong>Autor:</strong> {post.author?.username}</p>
             <p><strong>Visibilidad:</strong> {post.isPrivate ? 'Privado' : 'Público'}</p>
 
-            {/* Solo mostrar los botones de edición si es el autor */}
             {isAuthor && (
                 <div>
-                    {/* Si está en modo edición, mostrar inputs para editar */}
                     {isEditing ? (
-                        <div>
+                        <div className="edit-container">
                             <input 
                                 type="text" 
                                 value={title} 
                                 onChange={(e) => setTitle(e.target.value)} 
-                                placeholder="Título" 
+                                placeholder="Título"
+                                className="edit-input"
                             />
                             <textarea 
                                 value={body} 
                                 onChange={(e) => setBody(e.target.value)} 
                                 placeholder="Cuerpo de la publicación" 
+                                className="edit-textarea"
                             ></textarea>
-                            <button onClick={handleSaveChanges} className="save-button">Guardar Cambios</button>
+                            <button onClick={handleSaveChanges} className="save-button">
+                                <FontAwesomeIcon icon={faSave} /> Guardar Cambios
+                            </button>
                         </div>
                     ) : (
-                        // Si no está en modo edición, mostrar el botón de editar
-                        <button onClick={handleEditClick} className="edit-button">Editar</button>
+                        <div className="button-group">
+                            <button onClick={handleEditClick} className="edit-button">
+                                <FontAwesomeIcon icon={faEdit} /> Editar Publicación
+                            </button>
+                            <button onClick={handleDelete} className="delete-button">
+                                <FontAwesomeIcon icon={faTrashAlt} /> Eliminar Publicación
+                            </button>
+                            <button onClick={handleToggleVisibility} className="visibility-button">
+                                <FontAwesomeIcon icon={post.isPrivate ? faEyeSlash : faEye} /> 
+                                {post.isPrivate ? 'Hacer Público' : 'Hacer Privado'}
+                            </button>
+                        </div>
                     )}
-                    <button onClick={handleDelete} className="delete-button">Eliminar</button>
-                    <button onClick={handleToggleVisibility} className="visibility-button">
-                        {post.isPrivate ? 'Hacer Público' : 'Hacer Privado'}
-                    </button>
                 </div>
             )}
 
             {message && <p className="post-message">{message}</p>}
 
-            {/* Botón para regresar a la lista de publicaciones */}
-            <button onClick={handleBackToPosts} className="back-button">Regresar a publicaciones</button>
+            <button onClick={handleBackToPosts} className="back-button">
+                <FontAwesomeIcon icon={faArrowLeft} /> Regresar a publicaciones
+            </button>
         </div>
     );
 };

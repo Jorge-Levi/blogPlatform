@@ -7,11 +7,13 @@ const PostList = () => {
     const [posts, setPosts] = useState([]);
     const [myPosts, setMyPosts] = useState([]);
     const [otherPosts, setOtherPosts] = useState([]);
+    const [loading, setLoading] = useState(true);  // Estado para la carga
     const navigate = useNavigate();  // Para manejar la redirección
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
+                setLoading(true);  // Activar el estado de carga
                 const response = await API.get('/posts');
                 const allPosts = response.data;
 
@@ -31,6 +33,8 @@ const PostList = () => {
                 }
             } catch (error) {
                 console.log('Error al obtener las publicaciones');
+            } finally {
+                setLoading(false);  // Desactivar el estado de carga
             }
         };
         fetchPosts();
@@ -52,6 +56,10 @@ const PostList = () => {
         navigate('/create-post');  // Redirigir al formulario de creación de post
     };
 
+    if (loading) {
+        return <div className="loading-spinner">Cargando publicaciones...</div>;
+    }
+
     return (
         <div className="post-list-container">
             <h2>Mis Publicaciones</h2>
@@ -59,7 +67,9 @@ const PostList = () => {
             <button onClick={handleCreatePost} className="create-post-button">Crear Nuevo Post</button>
 
             {myPosts.length === 0 ? (
-                <p>No has creado ninguna publicación.</p>
+                <div className="empty-state">
+                    <p>No has creado ninguna publicación.</p>
+                </div>
             ) : (
                 <div className="posts-grid">
                     {myPosts.map((post) => (
@@ -79,7 +89,9 @@ const PostList = () => {
 
             <h2>Publicaciones de Otros Usuarios</h2>
             {otherPosts.length === 0 ? (
-                <p>No hay publicaciones de otros usuarios.</p>
+                <div className="empty-state">
+                    <p>No hay publicaciones de otros usuarios.</p>
+                </div>
             ) : (
                 <div className="posts-grid">
                     {otherPosts.map((post) => (

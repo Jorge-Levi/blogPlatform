@@ -15,7 +15,7 @@ const CreatePost = () => {
         setLoading(true);
         try {
             const response = await API.post('/posts', { title, body });
-            setMessage('Publicación creada con éxito');
+            setMessage('¡Felicidades! Tu publicación ha sido creada con éxito.');
             setTimeout(() => navigate('/posts'), 2000);  // Redirige a la lista de publicaciones tras 2 segundos
         } catch (error) {
             setMessage('Error al crear la publicación');
@@ -39,6 +39,7 @@ const CreatePost = () => {
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
                     className="input-field"
+                    aria-label="Título de la publicación"
                     required
                 />
                 <textarea
@@ -47,9 +48,14 @@ const CreatePost = () => {
                     onChange={(e) => setBody(e.target.value)}
                     value={body}
                     className="textarea-field"
+                    aria-label="Contenido de la publicación"
                     required
                 ></textarea>
-                <button type="submit" className={`create-post-button ${loading ? 'loading' : ''}`}>
+                <button 
+                    type="submit" 
+                    className={`create-post-button ${loading ? 'loading' : ''}`} 
+                    aria-label="Crear Publicación"
+                >
                     {loading ? 'Creando...' : 'Crear Publicación'}
                 </button>
             </form>

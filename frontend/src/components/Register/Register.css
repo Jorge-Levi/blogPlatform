@@ -1,3 +1,4 @@
+/* Contenedor principal */
 .register-container {
     display: flex;
     flex-direction: column;
@@ -6,14 +7,19 @@
     padding: 2rem;
     max-width: 400px;
     margin: auto;
+    background-color: #f9f9f9;  /* Fondo suave para mejor legibilidad */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Sombra sutil */
 }
 
+/* Formulario */
 .register-form {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
 
+/* Input de texto */
 .input-field {
     padding: 12px;
     margin: 8px 0;
@@ -21,8 +27,15 @@
     border-radius: 5px;
     font-size: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;  /* Microinteracción */
 }
 
+.input-field:focus {
+    box-shadow: 0 0 5px 1px rgba(52, 152, 219, 0.6);  /* Indicador visual accesible */
+    outline: none;
+}
+
+/* Botón de registro */
 .register-button {
     width: 100%;
     padding: 12px;
@@ -31,12 +44,13 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;  /* Microinteracción */
     font-size: 16px;
 }
 
 .register-button:hover {
     background-color: #45a049;
+    transform: scale(1.02);  /* Efecto de hover */
 }
 
 .loading {
@@ -44,6 +58,7 @@
     cursor: not-allowed;
 }
 
+/* Mensaje de éxito o error */
 .register-message {
     margin-top: 1rem;
     font-size: 14px;
@@ -51,6 +66,7 @@
     text-align: center;
 }
 
+/* Botón para volver al login */
 .back-to-login-button {
     margin-top: 20px;
     padding: 10px;
@@ -59,11 +75,29 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
     font-size: 16px;
     width: 100%;
 }
 
 .back-to-login-button:hover {
-    background-color: #2980b9;  /* Tono más oscuro al hacer hover */
+    background-color: #2980b9;
+    transform: scale(1.02);
+}
+
+/* Animación de microinteracción */
+input:focus {
+    animation: pulse 1s infinite ease-in-out;  /* Sutil animación para mejorar la interacción */
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+    }
 }
